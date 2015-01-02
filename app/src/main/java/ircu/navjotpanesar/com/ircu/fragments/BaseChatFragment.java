@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.pircbotx.Channel;
+
 import ircu.navjotpanesar.com.ircu.activities.ChatActivity;
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
@@ -33,6 +35,7 @@ public abstract class BaseChatFragment extends Fragment {
 //        i.putExtra("KEY1", "Value to be used by the service");
 //        getActivity().startService(i);
 
+
         startChatService();
         bindChatService();
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -40,19 +43,27 @@ public abstract class BaseChatFragment extends Fragment {
 
     public void handleBasicMessage(ChatMessage message){};
 
+    public void handleChannelJoin(Channel channel){};
+
     private ChatServiceCallback getChatServiceCallback(){
         return new ChatServiceCallback(){
             @Override
             public void onBasicMessage(ChatMessage message) {
                 handleBasicMessage(message);
             }
+
+            @Override
+            public void onChannelJoined(Channel channel) {
+                handleChannelJoin(channel);
+            }
+
         };
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             chatService = ((ChatService.LocalBinder) service).getService();
-            chatService.registerCallback(getChatServiceCallback());
+            chatService.registerObserver(getChatServiceCallback());
             ChatLogger.v("Registered callback");
         }
 

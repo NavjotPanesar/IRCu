@@ -7,4 +7,5 @@ import ircu.navjotpanesar.com.ircu.models.ChatMessage;
  */
 public interface ChatServiceCallback {
     public void onBasicMessage(ChatMessage message);
+    public void onChannelJoined(org.pircbotx.Channel channel);
 }

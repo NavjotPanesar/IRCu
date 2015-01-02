@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.pircbotx.Channel;
+
 import java.util.ArrayList;
 
 import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.adapters.ChatListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 /**
  * Created by Navjot on 11/27/2014.
@@ -25,6 +28,7 @@ import ircu.navjotpanesar.com.ircu.models.ChatMessage;
 public class ChatListFragment extends BaseChatFragment {
     private RecyclerView chatRecyclerView;
     private ChatListAdapter chatListAdapter;
+    private Channel currentChannel;
 
     public ChatListFragment() {
     }
@@ -55,11 +59,30 @@ public class ChatListFragment extends BaseChatFragment {
 
     @Override
     public void handleBasicMessage(final ChatMessage message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                chatListAdapter.append(message);
-            }
-        });
+        super.handleBasicMessage(message);
+        if(message.getChannel().equals(this.currentChannel)){
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    chatListAdapter.append(message);
+                }
+            });
+        }
+
     }
+
+    @Override
+    public void handleChannelJoin(Channel newChannel) {
+        super.handleChannelJoin(newChannel);
+        if(this.currentChannel == null){
+            this.currentChannel = newChannel;
+            switchChannel(newChannel);
+        }
+    }
+
+    public void switchChannel(Channel channel) {
+        getActivity().setTitle(currentChannel.getBot().getConfiguration().getServerHostname() + " / " +currentChannel.getName());
+        currentChannel = channel;
+    }
+
 }
