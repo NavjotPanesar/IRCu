@@ -10,15 +10,12 @@ import org.pircbotx.Channel;
 import org.pircbotx.Configuration;
 import org.pircbotx.MultiBotManager;
 import org.pircbotx.PircBotX;
-import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.ConnectEvent;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.ServerResponseEvent;
-import org.pircbotx.hooks.types.GenericMessageEvent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +100,8 @@ public class ChatService extends Service {
             return null;
         }
     }
+
+
 
     private class ChatListener extends ListenerAdapter {
         public ChatListener() {

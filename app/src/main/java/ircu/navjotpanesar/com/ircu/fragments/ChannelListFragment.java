@@ -1,7 +1,11 @@
 package ircu.navjotpanesar.com.ircu.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.app.LoaderManager;
+import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,16 +14,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.pircbotx.Channel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.adapters.ChannelListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
+import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
+import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
 import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
-import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +37,7 @@ import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
  * create an instance of this fragment.
  *
  */
-public class ChannelListFragment extends BaseChatFragment {
+public class ChannelListFragment extends Fragment {
     private OnChannelSwitchListener mListener;
     private RecyclerView channelRecyclerView;
     private ChannelListAdapter channelListAdapter;
@@ -58,6 +65,15 @@ public class ChannelListFragment extends BaseChatFragment {
         View rootView = inflater.inflate(R.layout.fragment_channel_list, container, false);
         setupChannelListView(rootView);
 
+        Button addNewButton = (Button) rootView.findViewById(R.id.fragment_channel_add_new_button);
+        addNewButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                saveNewChannel("test", "test");
+            }
+        });
+
         return rootView;
     }
 
@@ -69,14 +85,63 @@ public class ChannelListFragment extends BaseChatFragment {
         channelRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         channelRecyclerView.setItemAnimator(new DefaultItemAnimator());
         channelRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
+        loadData();
+    }
+
+    //call when user adds new channel
+    private void saveNewChannel(String channel, String server){
+        ContentValues values = new ContentValues();
+        values.put(ChannelsTable.COLUMNS.CHANNEL, channel);
+        values.put(ChannelsTable.COLUMNS.SERVER, server);
+        getActivity().getContentResolver().insert(ChannelsContentProvider.CONTENT_URI, values);
+
+        ChannelListItem channelListItem = new ChannelListItem(channel, server);
+        channelListAdapter.append(channelListItem);
+    }
+
+    private void loadData() {
+        getLoaderManager().initLoader(0, null, getContentLoaderCallback());
+    }
+
+    private LoaderManager.LoaderCallbacks<Cursor> getContentLoaderCallback(){
+        return new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                String[] projection = { ChannelsTable.COLUMNS.ID, ChannelsTable.COLUMNS.CHANNEL, ChannelsTable.COLUMNS.SERVER };
+
+                CursorLoader cursorLoader = new CursorLoader(getActivity(),
+                        ChannelsContentProvider.CONTENT_URI, projection, null, null, null);
+                return cursorLoader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+                List<ChannelListItem> messageList = new ArrayList<ChannelListItem>();
+                cursor.move(-1);
+                while (cursor.moveToNext()) {
+                    String channel = cursor.getString(cursor.getColumnIndex(ChannelsTable.COLUMNS.CHANNEL));
+                    String server = cursor.getString(cursor.getColumnIndex(ChannelsTable.COLUMNS.SERVER));
+                    ChannelListItem message = new ChannelListItem(channel, server);
+                    messageList.add(message);
+                }
+                cursor.close();
+                channelListAdapter.setData(messageList);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+
+            }
+        };
     }
 
     @Override
-    public void handleChannelJoin(Channel channel) {
-        super.handleChannelJoin(channel);
-        channelListAdapter.append(new ChannelListItem(channel));
-        ChatLogger.v("New channel to list");
+    public void onDestroy() {
+        super.onDestroy();
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void switchChannel(Channel channel) {

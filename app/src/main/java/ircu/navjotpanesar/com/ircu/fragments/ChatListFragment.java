@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import org.pircbotx.Channel;
 
@@ -20,7 +18,6 @@ import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.adapters.ChatListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
-import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 /**
  * Created by Navjot on 11/27/2014.
@@ -71,6 +68,7 @@ public class ChatListFragment extends BaseChatFragment {
 
     }
 
+
     @Override
     public void handleChannelJoin(Channel newChannel) {
         super.handleChannelJoin(newChannel);
@@ -79,6 +77,7 @@ public class ChatListFragment extends BaseChatFragment {
             switchChannel(newChannel);
         }
     }
+
 
     public void switchChannel(Channel channel) {
         getActivity().setTitle(currentChannel.getBot().getConfiguration().getServerHostname() + " / " +currentChannel.getName());

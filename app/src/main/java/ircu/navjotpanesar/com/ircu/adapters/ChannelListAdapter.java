@@ -67,4 +67,9 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         messageList.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void setData(List<ChannelListItem> data){
+        this.messageList = data;
+        notifyDataSetChanged();
+    }
 }
