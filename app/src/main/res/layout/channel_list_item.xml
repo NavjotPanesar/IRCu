@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground"
     android:padding="8dp">
 
     <!--<ircu.navjotpanesar.com.ircu.widgets.RobotoMediumTextView-->
@@ -25,7 +28,7 @@
         android:textColor="?android:textColorSecondary"
         android:textSize="@dimen/abc_text_size_small_material"
         android:layout_marginStart="8dp"
-        android:layout_toEndOf="@+id/channel_list_servername"
+        android:layout_toEndOf="@+id/channel_list_channelname"
         android:layout_alignParentEnd="true"
         android:id="@+id/channel_list_servername" />
 </RelativeLayout>

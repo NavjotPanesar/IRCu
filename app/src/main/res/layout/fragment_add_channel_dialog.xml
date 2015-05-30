@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:theme="@style/Theme.AppCompat.Light.Dialog"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_gravity="center" android:orientation="vertical"
+    android:padding="@dimen/dialog_padding">
+
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_add_channel_server" />
+
+    <EditText
+        android:id="@+id/fragment_add_channel_name"
+        android:hint="@string/channel_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:layout_below="@+id/fragment_add_channel_server"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/done"
+        android:id="@+id/fragment_add_channel_done"
+        android:layout_below="@id/fragment_add_channel_name"/>
+
+</RelativeLayout>

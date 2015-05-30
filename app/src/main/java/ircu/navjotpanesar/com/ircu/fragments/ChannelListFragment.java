@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.util.List;
 import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.adapters.ChannelListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
+import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
 import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
 import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
@@ -70,21 +72,34 @@ public class ChannelListFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                saveNewChannel("test", "test");
+                AddChannelDialogFragment.newInstance(onAddNewChannelDialogSuccessListener).show(getFragmentManager(), "add_new_channel");
             }
         });
 
         return rootView;
     }
 
+    private OnDialogSuccessListener onAddNewChannelDialogSuccessListener = new OnDialogSuccessListener() {
+        @Override
+        public void onSuccess(Intent intent) {
+            Bundle extras = intent.getExtras();
+            String server = extras.getString("server", "");
+            String channel = extras.getString("channel", "");
+
+            saveNewChannel(channel, server);
+        }
+    };
+
     private void setupChannelListView(View rootView) {
-        channelRecyclerView = (RecyclerView)rootView.findViewById(R.id.channel_list);
+        channelRecyclerView = (RecyclerView) rootView.findViewById(R.id.channel_list);
         channelListAdapter = new ChannelListAdapter(new ArrayList<ChannelListItem>());
         channelRecyclerView.setHasFixedSize(true);
         channelRecyclerView.setAdapter(channelListAdapter);
         channelRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         channelRecyclerView.setItemAnimator(new DefaultItemAnimator());
         channelRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        channelRecyclerView.setClickable(true);
+        channelRecyclerView.setFocusable(true);
 
         loadData();
     }
