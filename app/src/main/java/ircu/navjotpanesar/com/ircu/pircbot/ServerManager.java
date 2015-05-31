@@ -8,23 +8,29 @@ import org.jibble.pircbot.NickAlreadyInUseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
+import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 public class ServerManager {
-    //TODO: replace this with a set, using the server address as the key.
-    ArrayList<Server> serverList;
     ChatServiceCallback chatServiceCallback;
     private String name = "Testeroni232";
     private String password = "";
 
+    //Maps server URL to the associated server object
+    private HashMap<String, Server> serverMap = new HashMap<String,Server>();
+
     public ServerManager(ChatServiceCallback chatServiceCallback) {
         this.chatServiceCallback = chatServiceCallback;
-        serverList = new ArrayList<Server>();
     }
 
     public Server connectToChannel(ChannelItem channelItem) {
+        ChatLogger.network("Starting channel join for " + channelItem.getChannelName());
         Server server = getServer(channelItem.getServer());
+        ChatLogger.network("Obtained server " + server.getAddress());
         server.connChannel(channelItem);
         return server;
     }
@@ -34,13 +40,13 @@ public class ServerManager {
     //this function will create and connect to the server if needed
     private Server getServer(String address) {
         Server server;
-        if (!doesServerExist(address)) {
+        if (!serverMap.containsKey(address)) {
             server = new Server(address, name);
             server.setPassword(password);
             server.chatServiceCallback = chatServiceCallback;
-            serverList.add(server);
+            serverMap.put(address ,server);
         } else {
-            server = getServerByName(address);
+            server = serverMap.get(address);
         }
         if (!server.isConnected()) {
             //ircCallback.startLoadingServer();
@@ -49,36 +55,12 @@ public class ServerManager {
         return server;
     }
 
-    //TODO: replace with set get
-    private Server getServerByName(String address) {
-        int index = -1;
-        for (int i = 0; i < serverList.size(); i++) {
-            if (serverList.get(i).getAddress().equals(address)) {
-                index = i;
-            }
-        }
-        if (index == -1) {
-            Log.d("[SHIT]", "cant find server at that address");
-        }
-        return serverList.get(index);
-    }
-
-    //TODO: replace with set contains method
-    private boolean doesServerExist(String address) {
-        boolean exists = false;
-        for (int i = 0; i < serverList.size(); i++) {
-            if (serverList.get(i).getAddress().equals(address)) {
-                exists = true;
-            }
-        }
-        return exists;
-    }
 
 
     private class ServerConnectTask extends AsyncTask<Server, Void, String> {
         @Override
         protected String doInBackground(Server... bot) {
-            Log.d("[IRCd]", "starting connection to server");
+            ChatLogger.network("Starting connection to " + bot[0].getAddress());
             String result;
             try {
                 result = bot[0].startConnection();
@@ -100,8 +82,7 @@ public class ServerManager {
         protected void onPostExecute(String result) {
             if (result.equals("success")) {
                 //ircCallback.doneLoadingServer();
-
-                Log.d("[IRCd]", "done connection to server");
+                ChatLogger.network("finished connection");
             } else if (result.equals("NickInUse")) {
                 //ircCallback.pushMessage("Nickname currently in use, please change it");
             } else {
