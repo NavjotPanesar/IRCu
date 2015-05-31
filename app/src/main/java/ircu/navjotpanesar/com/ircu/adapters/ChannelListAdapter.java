@@ -1,6 +1,10 @@
 package ircu.navjotpanesar.com.ircu.adapters;
 
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.StateSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 
     private List<ChannelListItem> messageList;
     private ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener;
+    private int selectedPos = 0;
 
     public ChannelListAdapter(List<ChannelListItem> messageList, ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener) {
         this.messageList = messageList;
@@ -41,6 +46,12 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             if(position < 0 || position >= messageList.size()){
                 return;
             }
+
+            int oldSelectedPos = selectedPos;
+            selectedPos = position;
+            notifyItemChanged(oldSelectedPos);
+            notifyItemChanged(selectedPos);
+
             ChannelListItem selectedItem = messageList.get(position);
             if(selectedItem != null){
                 ChannelItem channelItem = new ChannelItem(selectedItem.getChannelName(), selectedItem.getServerName());
@@ -56,6 +67,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         viewHolder.serverView.setText(channel.getServerName());
         viewHolder.channelView.setText(channel.getChannelName());
         viewHolder.itemView.setTag(channel.getServerName() + "/" + channel.getChannelName());
+        viewHolder.itemView.setSelected(selectedPos == position);
     }
 
     @Override
@@ -74,12 +86,20 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             serverView = (TextView) itemView.findViewById(R.id.channel_list_servername);
             channelView = (TextView) itemView.findViewById(R.id.channel_list_channelname);
             itemView.setOnClickListener(this);
+
+            ColorDrawable colorDrawableSelected =
+                    new ColorDrawable(itemView.getResources().getColor(R.color.item_state_selected_color));
+
+            // create StateListDrawable object and define its states
+            StateListDrawable stateListDrawable = new StateListDrawable();
+            stateListDrawable.addState(new int[]{android.R.attr.state_selected}, colorDrawableSelected);
+            stateListDrawable.addState(StateSet.WILD_CARD, null);
+            itemView.setBackground(stateListDrawable);
         }
 
 
         @Override
         public void onClick(View v) {
-
             if(this.onChannelListItemSelectedListener != null){
                 int position = getPosition();
                 onChannelListItemSelectedListener.onChannelListItemSelected(position);

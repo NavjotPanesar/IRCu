@@ -1,4 +1,3 @@
 <resources>
-
-
+    <color name="item_state_selected_color">#ff33b5e5</color>
 </resources>
