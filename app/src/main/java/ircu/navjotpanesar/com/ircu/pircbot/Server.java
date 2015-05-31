@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 
 public class Server extends PircBot {
@@ -34,9 +35,9 @@ public class Server extends PircBot {
 
     public String startConnection() throws NickAlreadyInUseException, IOException, IrcException {
         this.setVerbose(false);
-        Log.d("[IRCd]", "about to connect...");
+        ChatLogger.network("about to connect to " + server  + "...");
         this.connect(server);
-        Log.d("[IRCd]", "connected");
+        ChatLogger.network("connected");
         return "success";
     }
 
@@ -68,7 +69,7 @@ public class Server extends PircBot {
 
     public void connChannel(ChannelItem chan) {
         if (!chan.checkConnected()) {
-            Log.d("[IRCd]", "connecting to chan with nick: " + this.name);
+            ChatLogger.network("connecting to chan with nick: " + this.name);
             new JoinChannel().execute(chan.getChannelName());
             chan.setConnected(true);
         }
@@ -80,9 +81,8 @@ public class Server extends PircBot {
 
     @Override
     public void onMessage(String channel, String sender, String login, String hostname, String message) {
-        Log.d("[INC]", channel + " " + message);
+        ChatLogger.network("[INC]" + channel + " " + message);
         //ircCallback.messageCallback(sender, message, channel, this.server, this.getUserPermissionLevel(channel, sender));
-
         chatServiceCallback.onBasicMessage(new ChatMessage(new ChannelItem(channel, server), sender, message));
     }
 
@@ -94,7 +94,6 @@ public class Server extends PircBot {
     @Override
     protected void onPart(String channel, String sender, String login, String hostname) {
         //ircCallback.messageCallback("SYSTEM", sender + " just left", channel, this.getAddress(), ChatItem.PERMISSION_SYSTEM);
-
     }
 
     /*
@@ -157,9 +156,9 @@ public class Server extends PircBot {
         @Override
         protected String doInBackground(String... chan) {
             String channelName = chan[0];
-            Log.d("[IRCd]", "about to connect to channel:" + channelName);
+            ChatLogger.network("kicking off asynctask for " + channelName);
             joinChannel(channelName);
-            Log.d("[IRCd]", "done connecting to channel");
+            ChatLogger.network("connected to " + channelName);
             return channelName;
         }
 
