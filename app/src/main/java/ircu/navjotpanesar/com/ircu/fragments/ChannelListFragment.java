@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import org.pircbotx.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
 import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
 import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
+import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,7 +92,7 @@ public class ChannelListFragment extends Fragment {
 
     private void setupChannelListView(View rootView) {
         channelRecyclerView = (RecyclerView) rootView.findViewById(R.id.channel_list);
-        channelListAdapter = new ChannelListAdapter(new ArrayList<ChannelListItem>());
+        channelListAdapter = new ChannelListAdapter(new ArrayList<ChannelListItem>(), onChannelSwitchListener);
         channelRecyclerView.setHasFixedSize(true);
         channelRecyclerView.setAdapter(channelListAdapter);
         channelRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -103,6 +103,13 @@ public class ChannelListFragment extends Fragment {
 
         loadData();
     }
+    
+    private OnChannelSwitchListener onChannelSwitchListener = new OnChannelSwitchListener() {
+        @Override
+        public void channelSwitch(ChannelItem channel) {
+            mListener.channelSwitch(channel);
+        }
+    };
 
     //call when user adds new channel
     private void saveNewChannel(String channel, String server){
@@ -159,7 +166,7 @@ public class ChannelListFragment extends Fragment {
 
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void switchChannel(Channel channel) {
+    public void switchChannel(ChannelItem channel) {
         if (mListener != null) {
             mListener.channelSwitch(channel);
         }
@@ -184,7 +191,7 @@ public class ChannelListFragment extends Fragment {
 
     public interface OnChannelSwitchListener {
         // TODO: Update argument type and name
-        public void channelSwitch(Channel channel);
+        public void channelSwitch(ChannelItem channel);
     }
 
 }

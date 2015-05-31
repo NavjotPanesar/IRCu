@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.pircbotx.Channel;
 
 import ircu.navjotpanesar.com.ircu.activities.ChatActivity;
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.services.ChatService;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
@@ -43,7 +43,11 @@ public abstract class BaseChatFragment extends Fragment {
 
     public void handleBasicMessage(ChatMessage message){};
 
-    public void handleChannelJoin(Channel channel){};
+    public void handleChannelJoin(ChannelItem channel){};
+
+    protected void switchChannel(ChannelItem channelItem){
+        chatService.joinChannel(channelItem);
+    }
 
     private ChatServiceCallback getChatServiceCallback(){
         return new ChatServiceCallback(){
@@ -53,7 +57,7 @@ public abstract class BaseChatFragment extends Fragment {
             }
 
             @Override
-            public void onChannelJoined(Channel channel) {
+            public void onChannelJoined(ChannelItem channel) {
                 handleChannelJoin(channel);
             }
 

@@ -1,6 +1,7 @@
 package ircu.navjotpanesar.com.ircu.models;
 
-import org.pircbotx.Channel;
+
+import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 
 /**
  * Created by Navjot on 11/28/2014.
@@ -8,9 +9,9 @@ import org.pircbotx.Channel;
 public class ChatMessage {
     private String author;
     private String message;
-    private Channel channel;
+    private ChannelItem channel;
 
-    public ChatMessage(Channel channel, String author, String message){
+    public ChatMessage(ChannelItem channel, String author, String message){
         this.author = author;
         this.message = message;
         this.channel = channel;
@@ -22,6 +23,6 @@ public class ChatMessage {
     public String getMessage() {
         return message;
     }
-    public Channel getChannel(){ return channel;}
+    public ChannelItem getChannel(){ return channel;}
 
 }

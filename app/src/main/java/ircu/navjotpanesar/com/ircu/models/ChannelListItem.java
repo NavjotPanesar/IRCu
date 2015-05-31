@@ -1,6 +1,5 @@
 package ircu.navjotpanesar.com.ircu.models;
 
-import org.pircbotx.Channel;
 
 /**
  * Created by Navjot on 1/1/2015.
@@ -23,11 +22,6 @@ public class ChannelListItem {
 
     public String getChannelName(){
         return channelName;
-    }
-
-    public ChannelListItem(Channel channel){
-        this.serverName = channel.getBot().getConfiguration().getServerHostname();
-        this.channelName = channel.getName();
     }
 
     public ChannelListItem(String channelName, String serverName){

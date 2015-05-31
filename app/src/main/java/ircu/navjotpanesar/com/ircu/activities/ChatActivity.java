@@ -13,11 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.pircbotx.Channel;
 
 import ircu.navjotpanesar.com.ircu.fragments.ChannelListFragment;
 import ircu.navjotpanesar.com.ircu.fragments.ChatListFragment;
 import ircu.navjotpanesar.com.ircu.R;
+import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.services.ChatService;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
@@ -54,8 +54,8 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
     }
 
     @Override
-    public void channelSwitch(Channel channel) {
-        setTitle(channel.getBot().getConfiguration().getServerHostname() + " // " + channel.getName());
+    public void channelSwitch(ChannelItem channel) {
+        setTitle(channel.getServer() + " // " + channel.getChannelName());
         chatListFragment.switchChannel(channel);
     }
 }

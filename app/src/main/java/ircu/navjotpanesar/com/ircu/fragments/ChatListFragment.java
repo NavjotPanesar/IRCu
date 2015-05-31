@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.pircbotx.Channel;
 
 import java.util.ArrayList;
 
@@ -18,6 +17,7 @@ import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.adapters.ChatListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 
 /**
  * Created by Navjot on 11/27/2014.
@@ -25,7 +25,7 @@ import ircu.navjotpanesar.com.ircu.models.ChatMessage;
 public class ChatListFragment extends BaseChatFragment {
     private RecyclerView chatRecyclerView;
     private ChatListAdapter chatListAdapter;
-    private Channel currentChannel;
+    private ChannelItem currentChannel;
 
     public ChatListFragment() {
     }
@@ -70,7 +70,7 @@ public class ChatListFragment extends BaseChatFragment {
 
 
     @Override
-    public void handleChannelJoin(Channel newChannel) {
+    public void handleChannelJoin(ChannelItem newChannel) {
         super.handleChannelJoin(newChannel);
         if(this.currentChannel == null){
             this.currentChannel = newChannel;
@@ -78,10 +78,11 @@ public class ChatListFragment extends BaseChatFragment {
         }
     }
 
-
-    public void switchChannel(Channel channel) {
-        getActivity().setTitle(currentChannel.getBot().getConfiguration().getServerHostname() + " / " +currentChannel.getName());
+    @Override
+    public void switchChannel(ChannelItem channel) {
+        getActivity().setTitle(currentChannel.getServer() + " / " +currentChannel.getChannelName());
         currentChannel = channel;
+        super.switchChannel(channel);
     }
 
 }

@@ -9,7 +9,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import ircu.navjotpanesar.com.ircu.R;
+import ircu.navjotpanesar.com.ircu.callbacks.OnChannelListItemSelectedListener;
+import ircu.navjotpanesar.com.ircu.fragments.ChannelListFragment;
 import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
+import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 
 /**
  * Created by Navjot on 1/1/2015.
@@ -17,16 +20,35 @@ import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 
     private List<ChannelListItem> messageList;
+    private ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener;
 
-    public ChannelListAdapter(List<ChannelListItem> messageList) {
+    public ChannelListAdapter(List<ChannelListItem> messageList, ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener) {
         this.messageList = messageList;
+        this.onChannelSwitchListener = onChannelSwitchListener;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_list_item, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, onChannelListItemSelectedListener);
     }
+
+    private OnChannelListItemSelectedListener onChannelListItemSelectedListener = new OnChannelListItemSelectedListener() {
+        @Override
+        public void onChannelListItemSelected(int position) {
+            //TODO: remove the need for this conversion
+            if(position < 0 || position >= messageList.size()){
+                return;
+            }
+            ChannelListItem selectedItem = messageList.get(position);
+            if(selectedItem != null){
+                ChannelItem channelItem = new ChannelItem(selectedItem.getChannelName(), selectedItem.getServerName());
+                onChannelSwitchListener.channelSwitch(channelItem);
+            }
+
+        }
+    };
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
@@ -41,14 +63,27 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         return messageList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView serverView;
         public TextView channelView;
+        private OnChannelListItemSelectedListener onChannelListItemSelectedListener;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, OnChannelListItemSelectedListener onChannelListItemSelectedListener) {
             super(itemView);
+            this.onChannelListItemSelectedListener = onChannelListItemSelectedListener;
             serverView = (TextView) itemView.findViewById(R.id.channel_list_servername);
             channelView = (TextView) itemView.findViewById(R.id.channel_list_channelname);
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+
+            if(this.onChannelListItemSelectedListener != null){
+                int position = getPosition();
+                onChannelListItemSelectedListener.onChannelListItemSelected(position);
+            }
         }
     }
 
