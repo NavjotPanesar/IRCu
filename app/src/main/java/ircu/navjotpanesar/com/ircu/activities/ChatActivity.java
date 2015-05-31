@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,7 +30,8 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_chat);
+        super.onCreate(savedInstanceState);
+        NavigationView navigationView = new NavigationView(this);
         if (savedInstanceState == null) {
 
             chatListFragment = ChatListFragment.newInstance() ;
@@ -44,7 +46,6 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
 
 
         }
-        super.onCreate(savedInstanceState);
 
     }
 
