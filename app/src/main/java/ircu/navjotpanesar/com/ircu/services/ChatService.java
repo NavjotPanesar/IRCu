@@ -42,7 +42,7 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        serverManager.connectToChannel(new ChannelItem("#pircbot", "irc.freenode.net"));
+        //serverManager.connectToChannel(new ChannelItem("#pircbot", "irc.freenode.net"));
         return Service.START_NOT_STICKY;
     }
 

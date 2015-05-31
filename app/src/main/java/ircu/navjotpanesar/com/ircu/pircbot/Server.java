@@ -72,8 +72,7 @@ public class Server extends PircBot {
     public void connChannel(ChannelItem chan) {
         if (!chan.checkConnected()) {
             ChatLogger.network("connecting to chan with nick: " + this.username);
-            new JoinChannel().execute(chan.getChannelName());
-            chan.setConnected(true);
+            new JoinChannel().execute(chan);
         }
     }
 
@@ -154,20 +153,21 @@ public class Server extends PircBot {
         return true;
     }
 
-    private class JoinChannel extends AsyncTask<String, Void, String> {
+    private class JoinChannel extends AsyncTask<ChannelItem, Void, ChannelItem> {
         @Override
-        protected String doInBackground(String... chan) {
-            String channelName = chan[0];
-            ChatLogger.network("kicking off asynctask for " + channelName);
-            joinChannel(channelName);
-            ChatLogger.network("connected to " + channelName);
-            return channelName;
+        protected ChannelItem doInBackground(ChannelItem... chan) {
+            ChannelItem channel = chan[0];
+            ChatLogger.network("kicking off asynctask for " + channel.getChannelName());
+            joinChannel(channel.getChannelName());
+            ChatLogger.network("connected to " + channel.getChannelName());
+            return channel;
         }
 
         @Override
-        protected void onPostExecute(String channelName) {
+        protected void onPostExecute(ChannelItem channel) {
             //ircCallback.doneJoiningChannel();
-            chatServiceCallback.onChannelJoined(new ChannelItem(channelName, server));
+            channel.setConnected(true);
+            chatServiceCallback.onChannelJoined(channel);
         }
     }
 }

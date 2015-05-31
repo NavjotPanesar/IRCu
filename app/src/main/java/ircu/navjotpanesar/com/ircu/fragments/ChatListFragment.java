@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -25,6 +26,7 @@ import ircu.navjotpanesar.com.ircu.adapters.ChatListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
+import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 /**
  * Created by Navjot on 11/27/2014.
@@ -34,6 +36,7 @@ public class ChatListFragment extends BaseChatFragment {
     private ChatListAdapter chatListAdapter;
     private ChannelItem currentChannel;
     private EditText messageEditView;
+    private ProgressBar progressBar;
 
     public ChatListFragment() {
     }
@@ -49,10 +52,12 @@ public class ChatListFragment extends BaseChatFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         messageEditView = (EditText) rootView.findViewById(R.id.fragment_chat_message);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.fragment_chat_loading);
         ImageButton sendButton = (ImageButton) rootView.findViewById(R.id.fragment_chat_send);
         setupChatListView(rootView);
         sendButton.setOnClickListener(messageClickListener);
         messageEditView.setOnEditorActionListener(messageImeListener);
+        messageEditView.setEnabled(false);
         return rootView;
     }
 
@@ -75,6 +80,11 @@ public class ChatListFragment extends BaseChatFragment {
     };
 
     private void sendMessage(){
+        if(currentChannel == null || !currentChannel.checkConnected()){
+            updatedMessageInputEnabled();
+            messageEditView.setError("Error: not connected to channel");
+            return;
+        }
         hideKeyboard();
         String message = messageEditView.getText().toString();
         super.sendMessage(currentChannel, message);
@@ -110,23 +120,31 @@ public class ChatListFragment extends BaseChatFragment {
                 }
             });
         }
-
     }
-
 
     @Override
     public void handleChannelJoin(ChannelItem newChannel) {
         super.handleChannelJoin(newChannel);
-        if(this.currentChannel == null){
-            this.currentChannel = newChannel;
-            switchChannel(newChannel);
-        }
+        updatedMessageInputEnabled();
     }
 
     @Override
     public void switchChannel(ChannelItem channel) {
         currentChannel = channel;
         super.switchChannel(channel);
+        updatedMessageInputEnabled();
+    }
+
+    private void updatedMessageInputEnabled(){
+        if(currentChannel == null || !currentChannel.checkConnected()){
+            ChatLogger.v("Disabled Input");
+            messageEditView.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            ChatLogger.v("Enabled Input");
+            messageEditView.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 }

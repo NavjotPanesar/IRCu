@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 public class IdenticonFactory {
     private int width;
     private int height;
-    private int backgroundColor; //white
+    private int backgroundColor;
     private DisplayMetrics displayMetrics;
 
     public IdenticonFactory(Activity activity, int width, int height, int backgroundColor){
@@ -32,7 +32,7 @@ public class IdenticonFactory {
     }
 
     public IdenticonFactory(Activity activity, int width, int height){
-        this(activity, width, height, -1);
+        this(activity, width, height, Color.parseColor("#EEEEEE"));
     }
 
     public Bitmap getBitmap(String input){
@@ -56,12 +56,15 @@ public class IdenticonFactory {
     private boolean[] getBitMap(String hash){
         boolean[] pixels = new boolean[5*5];
         for (int i = 0; i < 5; ++i) {
-            for (int j = 0; j < 5; ++j) {
+            for (int j = 0; j < 3; ++j) {
                 int segmentStart = (i * 5) + j + 6;
                 int segmentEnd = segmentStart + 1;
                 String hashSegment = hash.substring(segmentStart, segmentEnd);
                 int decColor = Integer.parseInt(hashSegment, 16);
-                pixels[i + j*5] = (decColor%2 == 0);
+                pixels[i*5 + j] = (decColor%2 == 0);
+            }
+            for (int j = 3; j < 5; ++j) {
+                pixels[i*5 + j] = pixels[i*5 + (4 - j)];
             }
         }
         return pixels;
@@ -75,7 +78,7 @@ public class IdenticonFactory {
             result = String.format("%032x", new BigInteger(1, messageDigest.digest()));
         } catch (NoSuchAlgorithmException e){
             ChatLogger.v("Failed to generate MD5 hash");
-            result = "";
+            result = "c21f969b5f03d33d43e04f8f136e7682";
         }
         return result;
     }
