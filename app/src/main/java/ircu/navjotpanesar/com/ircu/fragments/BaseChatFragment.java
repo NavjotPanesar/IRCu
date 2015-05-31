@@ -102,6 +102,8 @@ public abstract class BaseChatFragment extends Fragment {
                 ChatService.class));
     }
 
-
+    protected void sendMessage(ChannelItem channelItem, String message){
+        chatService.sendMessage(channelItem, message);
+    }
 
 }

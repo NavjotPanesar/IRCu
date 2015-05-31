@@ -19,10 +19,10 @@ public class Server extends PircBot {
 
     public ChatServiceCallback chatServiceCallback;
     private String server;
-    private String name;
+    private String username;
 
     public Server(String server, String name) {
-        this.name = name;
+        this.username = name;
         this.setName(name);
         this.server = server;
         this.setVerbose(true);
@@ -60,6 +60,8 @@ public class Server extends PircBot {
 
     public void send(ChannelItem channel, String message) {
         sendMessage(channel.getChannelName(), message);
+        ChatMessage newMessage = new ChatMessage(channel, this.username, message);
+        chatServiceCallback.onBasicMessage(newMessage);
     }
 
     public void leaveChannel(String channel) {
@@ -69,7 +71,7 @@ public class Server extends PircBot {
 
     public void connChannel(ChannelItem chan) {
         if (!chan.checkConnected()) {
-            ChatLogger.network("connecting to chan with nick: " + this.name);
+            ChatLogger.network("connecting to chan with nick: " + this.username);
             new JoinChannel().execute(chan.getChannelName());
             chan.setConnected(true);
         }
@@ -144,10 +146,10 @@ public class Server extends PircBot {
         final Server other = (Server) obj;
         if (this.server != other.server)
             return false;
-        if (name == null) {
-            if (other.name != null)
+        if (username == null) {
+            if (other.username != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!username.equals(other.username))
             return false;
         return true;
     }

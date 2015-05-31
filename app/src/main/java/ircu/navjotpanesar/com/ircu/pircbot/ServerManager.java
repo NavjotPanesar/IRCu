@@ -27,6 +27,11 @@ public class ServerManager {
         this.chatServiceCallback = chatServiceCallback;
     }
 
+    public void sendMessage(ChannelItem channelItem, String message){
+        Server server = getServer(channelItem.getServer());
+        server.send(channelItem, message);
+    }
+
     public Server connectToChannel(ChannelItem channelItem) {
         ChatLogger.network("Starting channel join for " + channelItem.getChannelName());
         Server server = getServer(channelItem.getServer());

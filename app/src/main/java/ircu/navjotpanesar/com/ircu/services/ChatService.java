@@ -78,4 +78,8 @@ public class ChatService extends Service {
     public void joinChannel(ChannelItem channelItem){
         serverManager.connectToChannel(channelItem);
     }
+
+    public void sendMessage(ChannelItem channelItem, String message) {
+        serverManager.sendMessage(channelItem, message);
+    }
 }

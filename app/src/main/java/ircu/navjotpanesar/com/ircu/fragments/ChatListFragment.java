@@ -1,14 +1,22 @@
 package ircu.navjotpanesar.com.ircu.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -26,6 +34,7 @@ public class ChatListFragment extends BaseChatFragment {
     private RecyclerView chatRecyclerView;
     private ChatListAdapter chatListAdapter;
     private ChannelItem currentChannel;
+    private EditText messageEditView;
 
     public ChatListFragment() {
     }
@@ -40,8 +49,45 @@ public class ChatListFragment extends BaseChatFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+        messageEditView = (EditText) rootView.findViewById(R.id.fragment_chat_message);
+        ImageButton sendButton = (ImageButton) rootView.findViewById(R.id.fragment_chat_send);
         setupChatListView(rootView);
+        sendButton.setOnClickListener(messageClickListener);
+        messageEditView.setOnEditorActionListener(messageImeListener);
         return rootView;
+    }
+
+    private View.OnClickListener messageClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            sendMessage();
+        }
+    };
+
+    private TextView.OnEditorActionListener messageImeListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if(actionId == EditorInfo.IME_ACTION_SEND){
+                sendMessage();
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private void sendMessage(){
+        hideKeyboard();
+        String message = messageEditView.getText().toString();
+        super.sendMessage(currentChannel, message);
+        messageEditView.setText("");
+    }
+
+    private void hideKeyboard() {
+        View v = getActivity().getWindow().getCurrentFocus();
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 
     private void setupChatListView(View rootView) {
