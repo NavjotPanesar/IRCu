@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -92,7 +91,7 @@ public class ChatListFragment extends BaseChatFragment {
 
     private void setupChatListView(View rootView) {
         chatRecyclerView = (RecyclerView)rootView.findViewById(R.id.fragment_chat_list);
-        chatListAdapter = new ChatListAdapter(new ArrayList<ChatMessage>());
+        chatListAdapter = new ChatListAdapter(new ArrayList<ChatMessage>(), getActivity());
         chatRecyclerView.setHasFixedSize(true);
         chatRecyclerView.setAdapter(chatListAdapter);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
