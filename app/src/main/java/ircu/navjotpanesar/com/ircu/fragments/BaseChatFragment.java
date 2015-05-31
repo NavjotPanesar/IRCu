@@ -41,6 +41,12 @@ public abstract class BaseChatFragment extends Fragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbindChatService();
+    }
+
     public void handleBasicMessage(ChatMessage message){};
 
     public void handleChannelJoin(ChannelItem channel){};
