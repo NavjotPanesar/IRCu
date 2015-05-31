@@ -80,7 +80,6 @@ public class ChatListFragment extends BaseChatFragment {
 
     @Override
     public void switchChannel(ChannelItem channel) {
-        getActivity().setTitle(currentChannel.getServer() + " / " +currentChannel.getChannelName());
         currentChannel = channel;
         super.switchChannel(channel);
     }
