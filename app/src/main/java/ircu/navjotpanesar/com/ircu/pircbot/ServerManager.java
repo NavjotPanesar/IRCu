@@ -17,14 +17,15 @@ import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 public class ServerManager {
     ChatServiceCallback chatServiceCallback;
-    private String name = "Testeroni232";
+    private String name = "";
     private String password = "";
 
     //Maps server URL to the associated server object
     private HashMap<String, Server> serverMap = new HashMap<String,Server>();
 
-    public ServerManager(ChatServiceCallback chatServiceCallback) {
+    public ServerManager(ChatServiceCallback chatServiceCallback, String username) {
         this.chatServiceCallback = chatServiceCallback;
+        this.name = username;
     }
 
     public void sendMessage(ChannelItem channelItem, String message){

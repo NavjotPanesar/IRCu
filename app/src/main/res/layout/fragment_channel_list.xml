@@ -5,11 +5,8 @@
     android:orientation="vertical"
     tools:context="ircu.navjotpanesar.com.ircu.fragments.ChannelListFragment">
 
-    <Button
-        android:id="@+id/fragment_channel_add_new_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_new_channel"/>
+    <include
+        layout="@layout/navigation_header"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

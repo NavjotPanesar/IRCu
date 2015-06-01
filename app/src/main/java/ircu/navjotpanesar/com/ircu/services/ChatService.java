@@ -2,9 +2,11 @@ package ircu.navjotpanesar.com.ircu.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class ChatService extends Service {
     }
 
     public ChatService() {
-        serverManager = new ServerManager(serverManagerCallback);
+        serverManager = new ServerManager(serverManagerCallback, "Testerino2311");
     }
 
     @Override

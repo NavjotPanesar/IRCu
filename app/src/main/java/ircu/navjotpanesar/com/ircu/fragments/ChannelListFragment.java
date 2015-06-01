@@ -6,9 +6,11 @@ import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +35,7 @@ import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
 import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
+import ircu.navjotpanesar.com.ircu.utils.IdenticonFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,6 +82,15 @@ public class ChannelListFragment extends Fragment {
                 AddChannelDialogFragment.newInstance(onAddNewChannelDialogSuccessListener).show(getFragmentManager(), "add_new_channel");
             }
         });
+
+
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.navigation_header_imageview);
+        TextView usernameView = (TextView) rootView.findViewById(R.id.navigation_header_username);
+
+        String username = "Testerino2311";
+        IdenticonFactory identiconFactory = new IdenticonFactory(getActivity(), 70, 70);
+        usernameView.setText(username);
+        imageView.setImageBitmap(identiconFactory.getBitmap(username));
 
         return rootView;
     }
@@ -161,15 +177,6 @@ public class ChannelListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void switchChannel(ChannelItem channel) {
-        if (mListener != null) {
-            mListener.channelSwitch(channel);
-        }
     }
 
     @Override

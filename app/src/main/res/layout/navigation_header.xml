@@ -1,16 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
+    android:layout_height="178dp"
     android:background="?attr/colorPrimaryDark"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:weightSum="1">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Username"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_alignParentStart="true">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Username"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp"
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white"
+            android:id="@+id/navigation_header_username"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <Button
+            android:id="@+id/fragment_channel_add_new_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_new_channel"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="38dp"
+        android:id="@+id/navigation_header_imageview"
+        />
+</RelativeLayout>
