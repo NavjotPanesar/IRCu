@@ -33,7 +33,6 @@ import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
 import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
 import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
-import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.utils.IdenticonFactory;
 
@@ -108,7 +107,7 @@ public class ChannelListFragment extends Fragment {
 
     private void setupChannelListView(View rootView) {
         channelRecyclerView = (RecyclerView) rootView.findViewById(R.id.channel_list);
-        channelListAdapter = new ChannelListAdapter(new ArrayList<ChannelListItem>(), onChannelSwitchListener);
+        channelListAdapter = new ChannelListAdapter(new ArrayList<ChannelItem>(), onChannelSwitchListener);
         channelRecyclerView.setHasFixedSize(true);
         channelRecyclerView.setAdapter(channelListAdapter);
         channelRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -134,7 +133,7 @@ public class ChannelListFragment extends Fragment {
         values.put(ChannelsTable.COLUMNS.SERVER, server);
         getActivity().getContentResolver().insert(ChannelsContentProvider.CONTENT_URI, values);
 
-        ChannelListItem channelListItem = new ChannelListItem(channel, server);
+        ChannelItem channelListItem = new ChannelItem(channel, server);
         channelListAdapter.append(channelListItem);
     }
 
@@ -155,12 +154,12 @@ public class ChannelListFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-                List<ChannelListItem> messageList = new ArrayList<ChannelListItem>();
+                List<ChannelItem> messageList = new ArrayList<ChannelItem>();
                 cursor.move(-1);
                 while (cursor.moveToNext()) {
                     String channel = cursor.getString(cursor.getColumnIndex(ChannelsTable.COLUMNS.CHANNEL));
                     String server = cursor.getString(cursor.getColumnIndex(ChannelsTable.COLUMNS.SERVER));
-                    ChannelListItem message = new ChannelListItem(channel, server);
+                    ChannelItem message = new ChannelItem(channel, server);
                     messageList.add(message);
                 }
                 cursor.close();

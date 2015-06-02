@@ -15,7 +15,6 @@ import java.util.List;
 import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.callbacks.OnChannelListItemSelectedListener;
 import ircu.navjotpanesar.com.ircu.fragments.ChannelListFragment;
-import ircu.navjotpanesar.com.ircu.models.ChannelListItem;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 
 /**
@@ -23,15 +22,14 @@ import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
  */
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
 
-    private List<ChannelListItem> messageList;
+    private List<ChannelItem> messageList;
     private ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener;
     private int selectedPos = -1;
 
-    public ChannelListAdapter(List<ChannelListItem> messageList, ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener) {
+    public ChannelListAdapter(List<ChannelItem> messageList, ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener) {
         this.messageList = messageList;
         this.onChannelSwitchListener = onChannelSwitchListener;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,7 +40,6 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
     private OnChannelListItemSelectedListener onChannelListItemSelectedListener = new OnChannelListItemSelectedListener() {
         @Override
         public void onChannelListItemSelected(int position) {
-            //TODO: remove the need for this conversion
             if(position < 0 || position >= messageList.size()){
                 return;
             }
@@ -52,10 +49,9 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             notifyItemChanged(oldSelectedPos);
             notifyItemChanged(selectedPos);
 
-            ChannelListItem selectedItem = messageList.get(position);
+            ChannelItem selectedItem = messageList.get(position);
             if(selectedItem != null){
-                ChannelItem channelItem = new ChannelItem(selectedItem.getChannelName(), selectedItem.getServerName());
-                onChannelSwitchListener.channelSwitch(channelItem);
+                onChannelSwitchListener.channelSwitch(selectedItem);
             }
 
         }
@@ -63,10 +59,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        ChannelListItem channel = messageList.get(position);
-        viewHolder.serverView.setText(channel.getServerName());
+        ChannelItem channel = messageList.get(position);
+        viewHolder.serverView.setText(channel.getServer());
         viewHolder.channelView.setText(channel.getChannelName());
-        viewHolder.itemView.setTag(channel.getServerName() + "/" + channel.getChannelName());
+        viewHolder.itemView.setTag(channel.getServer() + "/" + channel.getChannelName());
         viewHolder.itemView.setSelected(selectedPos == position);
     }
 
@@ -107,23 +103,23 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         }
     }
 
-    public void add(ChannelListItem channel, int position) {
+    public void add(ChannelItem channel, int position) {
         messageList.add(position, channel);
         notifyItemInserted(position);
     }
 
-    public void append(ChannelListItem channel){
+    public void append(ChannelItem channel){
         messageList.add(channel);
         notifyItemInserted(messageList.size() - 1);
     }
 
-    public void remove(ChannelListItem channel) {
+    public void remove(ChannelItem channel) {
         int position = messageList.indexOf(channel);
         messageList.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void setData(List<ChannelListItem> data){
+    public void setData(List<ChannelItem> data){
         this.messageList = data;
         notifyDataSetChanged();
     }
