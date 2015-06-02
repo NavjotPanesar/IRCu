@@ -31,9 +31,7 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NavigationView navigationView = new NavigationView(this);
         if (savedInstanceState == null) {
-
             chatListFragment = ChatListFragment.newInstance() ;
             getFragmentManager().beginTransaction()
                     .add(R.id.container, chatListFragment)
@@ -43,10 +41,12 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
             getFragmentManager().beginTransaction()
                     .add(R.id.left_drawer_container, channelListFragment)
                     .commit();
-
-
         }
+    }
 
+    @Override
+    int getContentViewId() {
+        return R.layout.activity_chat;
     }
 
 

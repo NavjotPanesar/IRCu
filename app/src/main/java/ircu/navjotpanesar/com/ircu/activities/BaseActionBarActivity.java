@@ -5,6 +5,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,7 +15,7 @@ import ircu.navjotpanesar.com.ircu.fragments.ChatListFragment;
 /**
  * Created by Navjot on 11/27/2014.
  */
-public class BaseActionBarActivity extends ActionBarActivity {
+public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     private DrawerLayout drawerLayout;
 
@@ -22,7 +23,7 @@ public class BaseActionBarActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_chat);
+        setContentView(getContentViewId());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -32,10 +33,13 @@ public class BaseActionBarActivity extends ActionBarActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close
         );
         drawerLayout.setDrawerListener(mDrawerToggle);
+        drawerLayout.openDrawer(Gravity.LEFT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
     }
+
+    abstract int getContentViewId();
 
     protected DrawerLayout getDrawerLayout(){
         return drawerLayout;

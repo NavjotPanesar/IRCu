@@ -25,7 +25,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
 
     private List<ChannelListItem> messageList;
     private ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener;
-    private int selectedPos = 0;
+    private int selectedPos = -1;
 
     public ChannelListAdapter(List<ChannelListItem> messageList, ChannelListFragment.OnChannelSwitchListener onChannelSwitchListener) {
         this.messageList = messageList;
