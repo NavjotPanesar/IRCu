@@ -77,4 +77,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         messageList.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void setMessageList(List<ChatMessage> messageList){
+        this.messageList = messageList;
+        notifyDataSetChanged();
+    }
 }

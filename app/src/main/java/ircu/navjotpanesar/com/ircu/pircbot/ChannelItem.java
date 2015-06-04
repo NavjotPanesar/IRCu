@@ -7,11 +7,14 @@ import org.jibble.pircbot.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+
 public class ChannelItem {
     private String channel;
     private String server;
     private boolean connected = false;
     private ArrayList<User> userList;
+    private ArrayList<ChatMessage> chatList = new ArrayList<ChatMessage>();
     private String topic;
 
     public ChannelItem(String channel, String server) {
@@ -25,6 +28,14 @@ public class ChannelItem {
 
     public void setConnected(boolean connected) {
         this.connected = connected;
+    }
+
+    public void addMessage(ChatMessage chatItem){
+        chatList.add(chatItem);
+    }
+
+    public ArrayList<ChatMessage> getChatList(){
+        return chatList;
     }
 
     public void removeUser(User user) {

@@ -9,6 +9,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
@@ -20,6 +21,8 @@ public class Server extends PircBot {
     public ChatServiceCallback chatServiceCallback;
     private String server;
     private String username;
+    //associates channel name to channel object
+    private HashMap<String, ChannelItem> channelMap = new HashMap<String, ChannelItem>();
 
     public Server(String server, String name) {
         this.username = name;
@@ -66,6 +69,7 @@ public class Server extends PircBot {
 
     public void leaveChannel(String channel) {
         this.partChannel(channel);
+        channelMap.remove(channel);
         //ircCallback.messageCallback("SYSTEM", "Left channel: " + channelItem.getChannelName(), channelItem.getChannelName(), this.getAddress(), ChatItem.PERMISSION_SYSTEM);
     }
 
@@ -81,10 +85,13 @@ public class Server extends PircBot {
     }
 
     @Override
-    public void onMessage(String channel, String sender, String login, String hostname, String message) {
-        ChatLogger.network("[INC]" + channel + " " + message);
+    public void onMessage(String channelName, String sender, String login, String hostname, String message) {
+        ChatLogger.network("[INC]" + channelName + " " + message);
         //ircCallback.messageCallback(sender, message, channel, this.server, this.getUserPermissionLevel(channel, sender));
-        chatServiceCallback.onBasicMessage(new ChatMessage(new ChannelItem(channel, server), sender, message));
+        ChannelItem channel = channelMap.get(channelName);
+        ChatMessage newMessage = new ChatMessage(channel, sender, message);
+        channel.addMessage(newMessage);
+        chatServiceCallback.onBasicMessage(newMessage);
     }
 
     @Override
@@ -167,6 +174,7 @@ public class Server extends PircBot {
         protected void onPostExecute(ChannelItem channel) {
             //ircCallback.doneJoiningChannel();
             channel.setConnected(true);
+            channelMap.put(channel.getChannelName(), channel);
             chatServiceCallback.onChannelJoined(channel);
         }
     }

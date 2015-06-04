@@ -131,6 +131,7 @@ public class ChatListFragment extends BaseChatFragment {
     @Override
     public void switchChannel(ChannelItem channel) {
         currentChannel = channel;
+        chatListAdapter.setMessageList(currentChannel.getChatList());
         super.switchChannel(channel);
         updatedMessageInputEnabled();
     }
