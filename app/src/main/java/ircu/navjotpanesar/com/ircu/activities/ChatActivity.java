@@ -60,4 +60,5 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
         chatListFragment.switchChannel(channel);
         getDrawerLayout().closeDrawers();
     }
+
 }
