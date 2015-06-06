@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by Navjot on 1/2/2015.
  */
-public class ChannelsDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "channelstable.db";
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME = "ircudatabase.db";
     private static final int DATABASE_VERSION = 1;
 
-    public ChannelsDatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -19,6 +19,7 @@ public class ChannelsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         ChannelsTable.onCreate(database);
+        ServersTable.onCreate(database);
     }
 
     // Method is called during an upgrade of the database,
@@ -27,6 +28,7 @@ public class ChannelsDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, int oldVersion,
                           int newVersion) {
         ChannelsTable.onUpgrade(database, oldVersion, newVersion);
+        ServersTable.onUpgrade(database, oldVersion, newVersion);
     }
 
 }

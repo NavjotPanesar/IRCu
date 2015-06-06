@@ -14,35 +14,35 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import ircu.navjotpanesar.com.ircu.database.DatabaseHelper;
-import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
+import ircu.navjotpanesar.com.ircu.database.ServersTable;
 
 /**
- * Created by Navjot on 1/2/2015.
+ * Created by navjot on 05/06/15.
  */
-public class ChannelsContentProvider extends ContentProvider {
+public class ServersContentProvider extends ContentProvider {
 
     // database
     private DatabaseHelper database;
 
     // used for the UriMacher
-    private static final int COMMENTS = 10;
-    private static final int COMMENT_ID = 20;
+    private static final int SERVERS = 10;
+    private static final int SERVER_ID = 20;
 
     private static final String AUTHORITY = "ircu.navjotpanesar.com.ircu.contentprovider";
 
-    private static final String BASE_PATH = "channels";
+    private static final String BASE_PATH = "servers";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
             + "/" + BASE_PATH);
 
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-            + "/channels";
+            + "/servers";
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-            + "/channels";
+            + "/servers";
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH, COMMENTS);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", COMMENT_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH, SERVERS);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", SERVER_ID);
     }
 
     @Override
@@ -62,15 +62,15 @@ public class ChannelsContentProvider extends ContentProvider {
         checkColumns(projection);
 
         // Set the table
-        queryBuilder.setTables(ChannelsTable.TABLE_CHANNELS);
+        queryBuilder.setTables(ServersTable.TABLE_SERVER);
 
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
-            case COMMENTS:
+            case SERVERS:
                 break;
-            case COMMENT_ID:
+            case SERVER_ID:
                 // adding the ID to the original query
-                queryBuilder.appendWhere(ChannelsTable.COLUMNS.ID + "="
+                queryBuilder.appendWhere(ServersTable.COLUMNS.ID + "="
                         + uri.getLastPathSegment());
                 break;
             default:
@@ -98,8 +98,8 @@ public class ChannelsContentProvider extends ContentProvider {
         int rowsDeleted = 0;
         long id = 0;
         switch (uriType) {
-            case COMMENTS:
-                id = sqlDB.insert(ChannelsTable.TABLE_CHANNELS, null, values);
+            case SERVERS:
+                id = sqlDB.insert(ServersTable.TABLE_SERVER, null, values);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -114,19 +114,19 @@ public class ChannelsContentProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         int rowsDeleted = 0;
         switch (uriType) {
-            case COMMENTS:
-                rowsDeleted = sqlDB.delete(ChannelsTable.TABLE_CHANNELS, selection,
+            case SERVERS:
+                rowsDeleted = sqlDB.delete(ServersTable.TABLE_SERVER, selection,
                         selectionArgs);
                 break;
-            case COMMENT_ID:
+            case SERVER_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = sqlDB.delete(ChannelsTable.TABLE_CHANNELS,
-                            ChannelsTable.COLUMNS.ID + "=" + id,
+                    rowsDeleted = sqlDB.delete(ServersTable.TABLE_SERVER,
+                            ServersTable.COLUMNS.ID + "=" + id,
                             null);
                 } else {
-                    rowsDeleted = sqlDB.delete(ChannelsTable.TABLE_CHANNELS,
-                            ChannelsTable.COLUMNS.ID + "=" + id
+                    rowsDeleted = sqlDB.delete(ServersTable.TABLE_SERVER,
+                            ServersTable.COLUMNS.ID + "=" + id
                                     + " and " + selection,
                             selectionArgs);
                 }
@@ -146,23 +146,23 @@ public class ChannelsContentProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         int rowsUpdated = 0;
         switch (uriType) {
-            case COMMENTS:
-                rowsUpdated = sqlDB.update(ChannelsTable.TABLE_CHANNELS,
+            case SERVERS:
+                rowsUpdated = sqlDB.update(ServersTable.TABLE_SERVER,
                         values,
                         selection,
                         selectionArgs);
                 break;
-            case COMMENT_ID:
+            case SERVER_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = sqlDB.update(ChannelsTable.TABLE_CHANNELS,
+                    rowsUpdated = sqlDB.update(ServersTable.TABLE_SERVER,
                             values,
-                            ChannelsTable.COLUMNS.ID + "=" + id,
+                            ServersTable.COLUMNS.ID + "=" + id,
                             null);
                 } else {
-                    rowsUpdated = sqlDB.update(ChannelsTable.TABLE_CHANNELS,
+                    rowsUpdated = sqlDB.update(ServersTable.TABLE_SERVER,
                             values,
-                            ChannelsTable.COLUMNS.ID + "=" + id
+                            ServersTable.COLUMNS.ID + "=" + id
                                     + " and "
                                     + selection,
                             selectionArgs);
@@ -176,9 +176,9 @@ public class ChannelsContentProvider extends ContentProvider {
     }
 
     private void checkColumns(String[] projection) {
-        String[] available = { ChannelsTable.COLUMNS.CHANNEL,
-                ChannelsTable.COLUMNS.SERVER,
-                ChannelsTable.COLUMNS.ID };
+        String[] available = { ServersTable.COLUMNS.SERVER,
+                ServersTable.COLUMNS.SERVER,
+                ServersTable.COLUMNS.ID };
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
             HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(available));
