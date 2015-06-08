@@ -24,6 +24,10 @@
             android:name=".contentproviders.ChannelsContentProvider"
             android:authorities="ircu.navjotpanesar.com.ircu.contentprovider" >
         </provider>
+        <provider
+            android:name=".contentproviders.ServersContentProvider"
+            android:authorities="ircu.navjotpanesar.com.ircu.contentprovider" >
+        </provider>
         <service
             android:name=".services.ChatService"
             android:exported="false"/>

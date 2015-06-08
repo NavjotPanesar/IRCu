@@ -11,6 +11,7 @@ public class ChannelsTable {
 
     public static final String TABLE_CHANNELS = "channels";
 
+    //TODO: make table unique by channel
     public class COLUMNS{
         public static final String ID = "_id";
         public static final String CHANNEL = "channel";

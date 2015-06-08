@@ -1,13 +1,17 @@
 package ircu.navjotpanesar.com.ircu.database;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 
 /**
  * Created by navjot on 05/06/15.
  */
 public class ServersTable {
     //TODO: add default servers
+    //TODO: make table unique by server
 
     public static final String TABLE_SERVER = "servers";
 
