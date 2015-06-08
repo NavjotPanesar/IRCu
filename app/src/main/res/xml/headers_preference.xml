@@ -4,8 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="ircu.navjotpanesar.com.ircu.fragments.SettingsFragment"
+        android:fragment="ircu.navjotpanesar.com.ircu.fragments.UserSettingsFragment"
         android:title="User"
         android:summary="Set default user settings" />
+
 
 </preference-headers>

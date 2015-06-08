@@ -8,12 +8,12 @@ import ircu.navjotpanesar.com.ircu.R;
 /**
  * Created by navjot on 05/06/15.
  */
-public class SettingsFragment extends PreferenceFragment
+public class UserSettingsFragment extends PreferenceFragment
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.fragment_preference);
+        addPreferencesFromResource(R.xml.preferences_user);
     }
 }
