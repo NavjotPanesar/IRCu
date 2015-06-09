@@ -23,12 +23,11 @@ import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
 /**
  * Created by Navjot on 5/30/2015.
  */
-public class AddChannelDialogFragment extends DialogFragment{
+public class AddChannelDialogFragment extends BaseDialogFragment{
 
 
     private Spinner serverSpinner;
     private EditText channelNameEditView;
-    private OnDialogSuccessListener onDialogSuccessListener;
 
     public static AddChannelDialogFragment newInstance(OnDialogSuccessListener onDialogSuccessListener) {
         AddChannelDialogFragment fragment = new AddChannelDialogFragment();
@@ -42,16 +41,11 @@ public class AddChannelDialogFragment extends DialogFragment{
         // Required empty public constructor
     }
 
-    public void setOnDialogSuccessListener(OnDialogSuccessListener onDialogSuccessListener){
-        this.onDialogSuccessListener = onDialogSuccessListener;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_channel_dialog, container);
-        setDialogSize();
-        serverSpinner = (Spinner) view.findViewById(R.id.fragment_add_channel_server);
-        channelNameEditView = (EditText) view.findViewById(R.id.fragment_add_channel_name);
+        View rootView = super.onCreateView(inflater,container,savedInstanceState);
+        serverSpinner = (Spinner) rootView.findViewById(R.id.fragment_add_channel_server);
+        channelNameEditView = (EditText) rootView.findViewById(R.id.fragment_add_channel_name);
 
         //TODO: should grab servers from a pre-populated list that can be added to by the user
         ArrayList<String> servers = new ArrayList<String>();
@@ -64,7 +58,7 @@ public class AddChannelDialogFragment extends DialogFragment{
         serverSpinner.setAdapter(serverSpinnerAdapter);
         getDialog().setTitle("Add a new channel");
 
-        view.findViewById(R.id.fragment_add_channel_done).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.fragment_add_channel_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDoneClicked();
@@ -81,14 +75,12 @@ public class AddChannelDialogFragment extends DialogFragment{
                 return false;
             }
         });
-        return view;
+        return rootView;
     }
 
-    private void setDialogSize() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        getDialog().getWindow().setLayout((6 * width)/7, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_add_channel_dialog;
     }
 
     private void onDoneClicked(){
