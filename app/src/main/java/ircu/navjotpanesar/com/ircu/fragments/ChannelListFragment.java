@@ -128,11 +128,6 @@ public class ChannelListFragment extends Fragment {
 
     //call when user adds new channel
     private void saveNewChannel(String channel, String server){
-        ContentValues values = new ContentValues();
-        values.put(ChannelsTable.COLUMNS.CHANNEL, channel);
-        values.put(ChannelsTable.COLUMNS.SERVER, server);
-        getActivity().getContentResolver().insert(ChannelsContentProvider.CONTENT_URI, values);
-
         ChannelItem channelListItem = new ChannelItem(channel, server);
         channelListAdapter.append(channelListItem);
     }

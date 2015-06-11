@@ -5,6 +5,7 @@ import android.preference.PreferenceActivity;
 import java.util.List;
 
 import ircu.navjotpanesar.com.ircu.R;
+import ircu.navjotpanesar.com.ircu.fragments.AddServerDialogFragment;
 import ircu.navjotpanesar.com.ircu.fragments.UserSettingsFragment;
 
 /**
@@ -21,6 +22,6 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     protected boolean isValidFragment(String fragmentName)
     {
-        return UserSettingsFragment.class.getName().equals(fragmentName);
+        return UserSettingsFragment.class.getName().equals(fragmentName) || AddServerDialogFragment.class.getName().equals(fragmentName);
     }
 }

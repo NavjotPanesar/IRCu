@@ -1,5 +1,6 @@
 package ircu.navjotpanesar.com.ircu.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +8,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.HashMap;
 
+import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.pircbot.Server;
 
@@ -20,6 +22,9 @@ public class ServerCache {
         Server server = attemptToRetrieveFromCache(serverAddress);
         if(server == null){
             server = attemptToRetrieveFromDatabase(serverAddress, context);
+            if (server != null) {
+                serverCache.put(serverAddress, server);
+            }
         }
         return server;
     }
@@ -65,4 +70,5 @@ public class ServerCache {
         cursor.close();
         return server;
     }
+
 }

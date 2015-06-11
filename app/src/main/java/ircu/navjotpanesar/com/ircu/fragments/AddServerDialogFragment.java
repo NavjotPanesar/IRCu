@@ -1,5 +1,6 @@
 package ircu.navjotpanesar.com.ircu.fragments;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ircu.navjotpanesar.com.ircu.R;
+import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
+import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
+import ircu.navjotpanesar.com.ircu.database.ServerCache;
+import ircu.navjotpanesar.com.ircu.database.ServersTable;
 
 /**
  * Created by Navjot on 6/9/2015.
@@ -24,6 +29,14 @@ public class AddServerDialogFragment extends BaseDialogFragment{
 
     private EditText serverNameEditView;
     private EditText nickEditView;
+
+    public static AddServerDialogFragment newInstance(OnDialogSuccessListener onDialogSuccessListener) {
+        AddServerDialogFragment fragment = new AddServerDialogFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        fragment.setOnDialogSuccessListener(onDialogSuccessListener);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +84,11 @@ public class AddServerDialogFragment extends BaseDialogFragment{
             nickEditView.setError("Field must not be empty");
             return;
         }
+
+        ContentValues values = new ContentValues();
+        values.put(ServersTable.COLUMNS.SERVER, server);
+        values.put(ServersTable.COLUMNS.NICK, nick);
+        getActivity().getContentResolver().insert(ChannelsContentProvider.CONTENT_URI, values);
 
         Intent returnedIntent = new Intent();
         returnedIntent.putExtra("server", server);

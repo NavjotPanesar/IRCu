@@ -8,5 +8,10 @@
         android:title="User"
         android:summary="Set default user settings" />
 
+    <header
+        android:fragment="ircu.navjotpanesar.com.ircu.fragments.AddServerDialogFragment"
+        android:title="Servers"
+        android:summary="Add new server" />
+
 
 </preference-headers>
