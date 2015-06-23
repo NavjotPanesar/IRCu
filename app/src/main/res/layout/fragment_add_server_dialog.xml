@@ -20,11 +20,28 @@
         android:imeOptions="actionDone"
         android:layout_below="@+id/fragment_add_server_name"/>
 
+    <TextView
+        android:id="@+id/fragment_add_server_check_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Use default nickname"
+        android:clickable="true"
+        android:layout_alignBaseline="@+id/fragment_add_server_check"
+        android:layout_alignBottom="@+id/fragment_add_server_check"
+        android:layout_toEndOf="@+id/fragment_add_server_check" />
+
+    <CheckBox
+        android:id="@+id/fragment_add_server_check"
+        android:layout_below="@id/fragment_add_server_nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/done"
         android:id="@+id/fragment_add_server_done"
-        android:layout_below="@id/fragment_add_server_nick"/>
+        android:layout_below="@id/fragment_add_server_check"/>
 
 </RelativeLayout>
