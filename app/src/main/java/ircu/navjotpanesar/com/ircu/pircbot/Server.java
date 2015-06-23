@@ -84,6 +84,13 @@ public class Server extends PircBot {
         return server;
     }
 
+    public String getUsername() { return username; }
+
+    public void setUsername(String username){
+        this.username = username;
+        this.setName(username);
+    }
+
     @Override
     public void onMessage(String channelName, String sender, String login, String hostname, String message) {
         ChatLogger.network("[INC]" + channelName + " " + message);

@@ -32,6 +32,17 @@ public class ServersTable {
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
+
+        //default values for the table
+        insertEntry(database, "irc.freenode.net", "");
+        insertEntry(database, "irc.rizon.net", "");
+    }
+
+    private static void insertEntry(SQLiteDatabase database, String server, String nick){
+        ContentValues values = new ContentValues();
+        values.put(COLUMNS.SERVER,server);
+        values.put(COLUMNS.NICK, nick);
+        database.insert(TABLE_SERVER, null, values);
     }
 
     public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

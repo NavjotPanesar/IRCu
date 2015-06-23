@@ -46,17 +46,14 @@ public class ServerCache {
         // Uisng SQLiteQueryBuilder instead of query() method
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        queryBuilder.appendWhere(ServersTable.COLUMNS.SERVER + "="
-                + serverAddress);
-
         // Set the table
         queryBuilder.setTables(ServersTable.TABLE_SERVER);
         String[] projection = { ServersTable.COLUMNS.ID, ServersTable.COLUMNS.SERVER, ServersTable.COLUMNS.NICK };
 
 
         SQLiteDatabase db = database.getReadableDatabase();
-        Cursor cursor = queryBuilder.query(db, projection, null,
-                null, null, null, null);
+        Cursor cursor = queryBuilder.query(db, projection, ServersTable.COLUMNS.SERVER + " = ?",
+                new String[]{serverAddress}, null, null, null);
 
         cursor.move(-1);
 

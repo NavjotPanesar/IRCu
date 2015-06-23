@@ -28,6 +28,15 @@ public class ChatService extends Service {
     private ServerManager serverManager;
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String defaultUsername = prefs.getString("default-nickname", "testerino12123");
+        serverManager = new ServerManager(this ,serverManagerCallback, defaultUsername);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         return binder;
     }
@@ -39,7 +48,6 @@ public class ChatService extends Service {
     }
 
     public ChatService() {
-        serverManager = new ServerManager(serverManagerCallback, "Testerino2311");
     }
 
     @Override

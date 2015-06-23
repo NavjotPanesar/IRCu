@@ -1,31 +1,32 @@
 package ircu.navjotpanesar.com.ircu.pircbot;
 
+import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.text.TextUtils;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
+import ircu.navjotpanesar.com.ircu.database.ServerCache;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 public class ServerManager {
+    private Context context;
     ChatServiceCallback chatServiceCallback;
-    private String name = "";
+    private String defaultUsername = "";
     private String password = "";
 
     //Maps server URL to the associated server object
     private HashMap<String, Server> serverMap = new HashMap<String,Server>();
 
-    public ServerManager(ChatServiceCallback chatServiceCallback, String username) {
+    public ServerManager(Context context, ChatServiceCallback chatServiceCallback, String defaultUsername) {
         this.chatServiceCallback = chatServiceCallback;
-        this.name = username;
+        this.defaultUsername = defaultUsername;
+        this.context = context;
     }
 
     public void sendMessage(ChannelItem channelItem, String message){
@@ -36,6 +37,10 @@ public class ServerManager {
     public Server connectToChannel(ChannelItem channelItem) {
         ChatLogger.network("Starting channel join for " + channelItem.getChannelName());
         Server server = getServer(channelItem.getServer());
+
+        if(TextUtils.isEmpty(server.getUsername())){
+            server.setUsername(defaultUsername);
+        }
         ChatLogger.network("Obtained server " + server.getAddress());
         server.connChannel(channelItem);
         return server;
@@ -47,7 +52,7 @@ public class ServerManager {
     private Server getServer(String address) {
         Server server;
         if (!serverMap.containsKey(address)) {
-            server = new Server(address, name);
+            server = ServerCache.getServer(address, context);
             server.setPassword(password);
             server.chatServiceCallback = chatServiceCallback;
             serverMap.put(address ,server);
