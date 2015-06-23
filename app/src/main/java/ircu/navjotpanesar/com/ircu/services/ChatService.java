@@ -18,6 +18,7 @@ import ircu.navjotpanesar.com.ircu.models.ChatMessage;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.pircbot.ServerManager;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
+import ircu.navjotpanesar.com.ircu.utils.SharedPrefs;
 
 /**
  * Created by Navjot on 11/27/2014.
@@ -31,9 +32,7 @@ public class ChatService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultUsername = prefs.getString("default-nickname", "testerino12123");
-        serverManager = new ServerManager(this ,serverManagerCallback, defaultUsername);
+        serverManager = new ServerManager(this ,serverManagerCallback);
     }
 
     @Override

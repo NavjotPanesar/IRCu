@@ -13,19 +13,18 @@ import java.util.HashMap;
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.database.ServerCache;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
+import ircu.navjotpanesar.com.ircu.utils.SharedPrefs;
 
 public class ServerManager {
     private Context context;
     ChatServiceCallback chatServiceCallback;
-    private String defaultUsername = "";
     private String password = "";
 
     //Maps server URL to the associated server object
     private HashMap<String, Server> serverMap = new HashMap<String,Server>();
 
-    public ServerManager(Context context, ChatServiceCallback chatServiceCallback, String defaultUsername) {
+    public ServerManager(Context context, ChatServiceCallback chatServiceCallback) {
         this.chatServiceCallback = chatServiceCallback;
-        this.defaultUsername = defaultUsername;
         this.context = context;
     }
 
@@ -39,6 +38,7 @@ public class ServerManager {
         Server server = getServer(channelItem.getServer());
 
         if(TextUtils.isEmpty(server.getUsername())){
+            String defaultUsername = SharedPrefs.getDefaultUsername(context);
             server.setUsername(defaultUsername);
         }
         ChatLogger.network("Obtained server " + server.getAddress());
