@@ -22,11 +22,11 @@
         </activity>
         <provider
             android:name=".contentproviders.ChannelsContentProvider"
-            android:authorities="ircu.navjotpanesar.com.ircu.contentprovider" >
+            android:authorities="ircu.navjotpanesar.com.ircu.contentprovider.ChannelsContentProvider" >
         </provider>
         <provider
             android:name=".contentproviders.ServersContentProvider"
-            android:authorities="ircu.navjotpanesar.com.ircu.contentprovider" >
+            android:authorities="ircu.navjotpanesar.com.ircu.contentprovider.ServersContentProvider" >
         </provider>
         <service
             android:name=".services.ChatService"

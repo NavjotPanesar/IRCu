@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
 import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
+import ircu.navjotpanesar.com.ircu.contentproviders.ServersContentProvider;
 import ircu.navjotpanesar.com.ircu.database.ServerCache;
 import ircu.navjotpanesar.com.ircu.database.ServersTable;
 
@@ -88,12 +89,14 @@ public class AddServerDialogFragment extends BaseDialogFragment{
         ContentValues values = new ContentValues();
         values.put(ServersTable.COLUMNS.SERVER, server);
         values.put(ServersTable.COLUMNS.NICK, nick);
-        getActivity().getContentResolver().insert(ChannelsContentProvider.CONTENT_URI, values);
+        getActivity().getContentResolver().insert(ServersContentProvider.CONTENT_URI, values);
 
         Intent returnedIntent = new Intent();
         returnedIntent.putExtra("server", server);
         returnedIntent.putExtra("nick", nick);
-        onDialogSuccessListener.onSuccess(returnedIntent);
+        if(onDialogSuccessListener != null){
+            onDialogSuccessListener.onSuccess(returnedIntent);
+        }
         dismiss();
     }
 }

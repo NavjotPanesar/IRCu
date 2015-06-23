@@ -109,7 +109,9 @@ public class AddChannelDialogFragment extends BaseDialogFragment{
         Intent returnedIntent = new Intent();
         returnedIntent.putExtra("server", server);
         returnedIntent.putExtra("channel", channel);
-        onDialogSuccessListener.onSuccess(returnedIntent);
+        if(onDialogSuccessListener != null){
+            onDialogSuccessListener.onSuccess(returnedIntent);
+        }
         dismiss();
     }
 
@@ -137,7 +139,7 @@ public class AddChannelDialogFragment extends BaseDialogFragment{
                     serverList.add(server);
                 }
                 cursor.close();
-                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serverList);
+                serverSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serverList);
                 serverSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 serverSpinner.setAdapter(serverSpinnerAdapter);
             }

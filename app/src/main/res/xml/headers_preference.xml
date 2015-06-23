@@ -9,7 +9,7 @@
         android:summary="Set default user settings" />
 
     <header
-        android:fragment="ircu.navjotpanesar.com.ircu.fragments.AddServerDialogFragment"
+        android:id="@+id/settings_add_server"
         android:title="Servers"
         android:summary="Add new server" />
 

@@ -28,7 +28,7 @@ public class ServersContentProvider extends ContentProvider {
     private static final int SERVERS = 10;
     private static final int SERVER_ID = 20;
 
-    private static final String AUTHORITY = "ircu.navjotpanesar.com.ircu.contentprovider";
+    private static final String AUTHORITY = "ircu.navjotpanesar.com.ircu.contentprovider.ServersContentProvider";
 
     private static final String BASE_PATH = "servers";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
@@ -176,9 +176,9 @@ public class ServersContentProvider extends ContentProvider {
     }
 
     private void checkColumns(String[] projection) {
-        String[] available = { ServersTable.COLUMNS.SERVER,
+        String[] available = { ServersTable.COLUMNS.ID,
                 ServersTable.COLUMNS.SERVER,
-                ServersTable.COLUMNS.ID };
+                ServersTable.COLUMNS.NICK };
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
             HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(available));

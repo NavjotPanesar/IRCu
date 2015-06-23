@@ -28,7 +28,7 @@ public class ChannelsContentProvider extends ContentProvider {
     private static final int COMMENTS = 10;
     private static final int COMMENT_ID = 20;
 
-    private static final String AUTHORITY = "ircu.navjotpanesar.com.ircu.contentprovider";
+    private static final String AUTHORITY = "ircu.navjotpanesar.com.ircu.contentprovider.ChannelsContentProvider";
 
     private static final String BASE_PATH = "channels";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY

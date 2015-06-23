@@ -26,7 +26,7 @@ public class ServersTable {
             + TABLE_SERVER + "(" + COLUMNS.ID
             + " integer primary key autoincrement, "
             + COLUMNS.SERVER
-            + " text not null, "
+            + " text not null unique, "
             + COLUMNS.NICK
             + " text not null);";
 
