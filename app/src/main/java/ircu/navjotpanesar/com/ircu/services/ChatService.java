@@ -71,7 +71,15 @@ public class ChatService extends Service {
         }
     }
 
+    public void notifyObserversSystemMessage(ChatMessage message) {
+        for (final ChatServiceCallback observer : observers) {
+            observer.onSystemMessage(message);
+        }
+    }
+
     private ChatServiceCallback serverManagerCallback = new ChatServiceCallback() {
+
+        // these observer functions just propagate the exact same callback to all observers
 
         @Override
         public void onBasicMessage(ChatMessage message) {
@@ -79,9 +87,16 @@ public class ChatService extends Service {
         }
 
         @Override
+        public void onSystemMessage(ChatMessage message) {
+            notifyObserversSystemMessage(message);
+        }
+
+        @Override
         public void onChannelJoined(ChannelItem channel) {
             notifyObserversChannelJoined(channel);
         }
+
+
     };
 
     public void joinChannel(ChannelItem channelItem){

@@ -8,5 +8,6 @@ import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
  */
 public interface ChatServiceCallback {
     public void onBasicMessage(ChatMessage message);
+    public void onSystemMessage(ChatMessage message);
     public void onChannelJoined(ChannelItem channel);
 }

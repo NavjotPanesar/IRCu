@@ -129,6 +129,20 @@ public class ChatListFragment extends BaseChatFragment {
     }
 
     @Override
+    public void handleSystemMessage(final ChatMessage message) {
+        //TODO: display this differently from regular message. different model => different view type in adapter?
+        super.handleSystemMessage(message);
+        if(message.getChannel().equals(this.currentChannel)){
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    chatListAdapter.append(message);
+                }
+            });
+        }
+    }
+
+    @Override
     public void switchChannel(ChannelItem channel) {
         currentChannel = channel;
         chatListAdapter.setMessageList(currentChannel.getChatList());

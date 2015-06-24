@@ -51,6 +51,8 @@ public abstract class BaseChatFragment extends Fragment {
 
     public void handleChannelJoin(ChannelItem channel){};
 
+    public void handleSystemMessage(ChatMessage message){};
+
     protected void switchChannel(ChannelItem channelItem){
         chatService.joinChannel(channelItem);
     }
@@ -60,6 +62,11 @@ public abstract class BaseChatFragment extends Fragment {
             @Override
             public void onBasicMessage(ChatMessage message) {
                 handleBasicMessage(message);
+            }
+
+            @Override
+            public void onSystemMessage(ChatMessage message) {
+                handleSystemMessage(message);
             }
 
             @Override
