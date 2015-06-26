@@ -15,6 +15,7 @@ import java.util.List;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.models.SystemMessage;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.pircbot.ServerManager;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
@@ -71,7 +72,7 @@ public class ChatService extends Service {
         }
     }
 
-    public void notifyObserversSystemMessage(ChatMessage message) {
+    public void notifyObserversSystemMessage(SystemMessage message) {
         for (final ChatServiceCallback observer : observers) {
             observer.onSystemMessage(message);
         }
@@ -87,7 +88,7 @@ public class ChatService extends Service {
         }
 
         @Override
-        public void onSystemMessage(ChatMessage message) {
+        public void onSystemMessage(SystemMessage message) {
             notifyObserversSystemMessage(message);
         }
 

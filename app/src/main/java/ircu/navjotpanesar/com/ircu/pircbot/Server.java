@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.models.SystemMessage;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
 
@@ -133,9 +134,12 @@ public class Server extends PircBot {
     }
 
     @Override
-    public void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
+    public void onTopic(String channelName, String topic, String setBy, long date, boolean changed) {
         //ircCallback.messageCallback("SYSTEM", "Topic: " + topic, channel, this.getAddress(), ChatItem.PERMISSION_SYSTEM);
         // getChannelByName(channel).setTopic(topic);
+        ChannelItem channel = channelMap.get(channelName);
+        SystemMessage newTopicMessage = new SystemMessage(channel, SystemMessage.SystemMessageType.TOPIC, topic );
+        chatServiceCallback.onSystemMessage(newTopicMessage);
     }
 
     @Override

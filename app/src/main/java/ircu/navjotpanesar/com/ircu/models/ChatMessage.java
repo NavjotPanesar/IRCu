@@ -1,28 +1,34 @@
 package ircu.navjotpanesar.com.ircu.models;
 
 
+import android.graphics.Bitmap;
+
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
+import ircu.navjotpanesar.com.ircu.utils.CachedIdenticonStorage;
 
 /**
  * Created by Navjot on 11/28/2014.
  */
-public class ChatMessage {
-    private String author;
-    private String message;
-    private ChannelItem channel;
+public class ChatMessage extends BaseMessage{
 
-    public ChatMessage(ChannelItem channel, String author, String message){
+
+    private String author;
+    public ChatMessage(ChannelItem channel, String author, String message) {
+        super(channel, message);
         this.author = author;
-        this.message = message;
-        this.channel = channel;
     }
+
+    @Override
+    public MessageType getMessageType() {
+        return MessageType.CHAT;
+    }
+
 
     public String getAuthor() {
         return author;
     }
-    public String getMessage() {
-        return message;
-    }
-    public ChannelItem getChannel(){ return channel;}
 
+    public Bitmap getProfileImage(CachedIdenticonStorage identiconStorage){
+        return identiconStorage.getImage(this.getAuthor());
+    }
 }

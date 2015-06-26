@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import ircu.navjotpanesar.com.ircu.activities.ChatActivity;
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
+import ircu.navjotpanesar.com.ircu.models.BaseMessage;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.models.SystemMessage;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.services.ChatService;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
@@ -51,7 +53,7 @@ public abstract class BaseChatFragment extends Fragment {
 
     public void handleChannelJoin(ChannelItem channel){};
 
-    public void handleSystemMessage(ChatMessage message){};
+    public void handleSystemMessage(SystemMessage message){};
 
     protected void switchChannel(ChannelItem channelItem){
         chatService.joinChannel(channelItem);
@@ -65,7 +67,7 @@ public abstract class BaseChatFragment extends Fragment {
             }
 
             @Override
-            public void onSystemMessage(ChatMessage message) {
+            public void onSystemMessage(SystemMessage message) {
                 handleSystemMessage(message);
             }
 

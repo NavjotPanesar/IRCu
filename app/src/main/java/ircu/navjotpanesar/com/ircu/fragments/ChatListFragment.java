@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import ircu.navjotpanesar.com.ircu.R;
 import ircu.navjotpanesar.com.ircu.adapters.ChatListAdapter;
 import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
+import ircu.navjotpanesar.com.ircu.models.BaseMessage;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.models.SystemMessage;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
@@ -101,7 +103,7 @@ public class ChatListFragment extends BaseChatFragment {
 
     private void setupChatListView(View rootView) {
         chatRecyclerView = (RecyclerView)rootView.findViewById(R.id.fragment_chat_list);
-        chatListAdapter = new ChatListAdapter(new ArrayList<ChatMessage>(), getActivity());
+        chatListAdapter = new ChatListAdapter(new ArrayList<BaseMessage>(), getActivity());
         chatRecyclerView.setHasFixedSize(true);
         chatRecyclerView.setAdapter(chatListAdapter);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -129,7 +131,7 @@ public class ChatListFragment extends BaseChatFragment {
     }
 
     @Override
-    public void handleSystemMessage(final ChatMessage message) {
+    public void handleSystemMessage(final SystemMessage message) {
         //TODO: display this differently from regular message. different model => different view type in adapter?
         super.handleSystemMessage(message);
         if(message.getChannel().equals(this.currentChannel)){
