@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="FOO">
+        android:title="User settings">
 
         <EditTextPreference
             android:key="default-nickname"
