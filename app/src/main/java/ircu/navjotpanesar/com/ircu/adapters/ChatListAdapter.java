@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ircu.navjotpanesar.com.ircu.R;
@@ -116,7 +117,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setMessageList(List<BaseMessage> messageList){
-        this.messageList = messageList;
+        // copy, it over; this.messageList is just an array for displaying the chat items.
+        // we don't want additions to it to also mutate the messageList within the channel objects
+        this.messageList = new ArrayList<>(messageList);
         notifyDataSetChanged();
     }
 }
