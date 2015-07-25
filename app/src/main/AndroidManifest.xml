@@ -8,7 +8,7 @@
         android:label="@string/app_name" >
         <activity
             android:name=".activities.ChatActivity"
-
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme"
             android:label="@string/app_name" >
             <intent-filter>
