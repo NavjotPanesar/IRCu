@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_custom" />
+
+    <!-- The navigation drawer -->
+    <FrameLayout
+        android:id="@+id/left_drawer_container"
+        android:layout_width="304dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:background="#FAFAFA"/>
+
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_toEndOf="@+id/left_drawer_container"/>
+
+</RelativeLayout>

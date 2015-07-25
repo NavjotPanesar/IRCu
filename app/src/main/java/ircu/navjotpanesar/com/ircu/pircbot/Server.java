@@ -113,6 +113,7 @@ public class Server extends PircBot {
     protected void onPart(String channelName, String sender, String login, String hostname) {
         ChannelItem channel = channelMap.get(channelName);
         LeaveMessage newLeaveMessage = new LeaveMessage(channel, sender);
+        channel.addMessage(newLeaveMessage);
         chatServiceCallback.onSystemMessage(newLeaveMessage);
     }
 
@@ -135,6 +136,7 @@ public class Server extends PircBot {
     protected void onJoin(String channelName, String sender, String login, String hostname) {
         ChannelItem channel = channelMap.get(channelName);
         JoinMessage newJoinMessage = new JoinMessage(channel, sender);
+        channel.addMessage(newJoinMessage);
         chatServiceCallback.onSystemMessage(newJoinMessage);
     }
 
@@ -144,6 +146,7 @@ public class Server extends PircBot {
         // getChannelByName(channel).setTopic(topic);
         ChannelItem channel = channelMap.get(channelName);
         SystemMessage newTopicMessage = new SystemMessage(channel, SystemMessage.SystemMessageType.TOPIC, topic );
+        channel.addMessage(newTopicMessage);
         chatServiceCallback.onSystemMessage(newTopicMessage);
     }
 

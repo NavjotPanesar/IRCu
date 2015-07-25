@@ -19,6 +19,7 @@ import ircu.navjotpanesar.com.ircu.fragments.ChatListFragment;
 public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +30,21 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        );
-        drawerLayout.setDrawerListener(mDrawerToggle);
-        drawerLayout.openDrawer(Gravity.LEFT);
+        if(drawerLayout != null){
+            mDrawerToggle = new ActionBarDrawerToggle(
+                    this, drawerLayout, toolbar,
+                    R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            );
+            drawerLayout.setDrawerListener(mDrawerToggle);
+            drawerLayout.openDrawer(Gravity.LEFT);
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        mDrawerToggle.syncState();
+
+        if(drawerLayout != null){
+            mDrawerToggle.syncState();
+        }
     }
 
     abstract int getContentViewId();

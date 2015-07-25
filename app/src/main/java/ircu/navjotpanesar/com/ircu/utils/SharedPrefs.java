@@ -10,6 +10,6 @@ import android.preference.PreferenceManager;
 public class SharedPrefs {
     public static String getDefaultUsername(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString("default-nickname", "");
+        return prefs.getString("default-nickname", "DefaultNick");
     }
 }
