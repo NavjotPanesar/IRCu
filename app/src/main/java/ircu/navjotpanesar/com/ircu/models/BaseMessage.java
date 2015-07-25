@@ -13,8 +13,8 @@ public abstract class BaseMessage{
 
     public abstract MessageType getMessageType();
 
-    private String message;
-    private ChannelItem channel;
+    protected String message;
+    protected ChannelItem channel;
 
     public BaseMessage(ChannelItem channel, String message){
         this.message = message;

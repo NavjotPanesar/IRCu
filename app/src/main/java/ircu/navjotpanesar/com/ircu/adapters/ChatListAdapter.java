@@ -2,11 +2,14 @@ package ircu.navjotpanesar.com.ircu.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +63,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             SystemMessage message = (SystemMessage) baseMessage;
             SystemMessageViewHolder systemViewHolder = (SystemMessageViewHolder) viewHolder;
             systemViewHolder.messageView.setText(message.getMessage());
+            systemViewHolder.messageView.setVisibility( (TextUtils.isEmpty(message.getMessage()) ? View.GONE : View.VISIBLE) );
             systemViewHolder.infoView.setText(message.getInfoType());
+            systemViewHolder.infoView.setVisibility( (TextUtils.isEmpty(message.getInfoType()) ? View.GONE : View.VISIBLE) );
             viewHolder.itemView.setTag(message);
         }
 

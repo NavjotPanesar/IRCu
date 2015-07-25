@@ -9,7 +9,9 @@ public class SystemMessage extends BaseMessage{
 
     public enum SystemMessageType{
         INFO,
-        TOPIC
+        TOPIC,
+        JOIN,
+        LEAVE
     }
 
     private SystemMessageType systemMessageType;
@@ -25,6 +27,10 @@ public class SystemMessage extends BaseMessage{
                 return "Info:";
             case TOPIC:
                 return "Topic changed to";
+            case JOIN:
+                return "";
+            case LEAVE:
+                return "";
             default:
                 return "";
         }

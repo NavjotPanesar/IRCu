@@ -10,8 +10,6 @@ import ircu.navjotpanesar.com.ircu.utils.CachedIdenticonStorage;
  * Created by Navjot on 11/28/2014.
  */
 public class ChatMessage extends BaseMessage{
-
-
     private String author;
     public ChatMessage(ChannelItem channel, String author, String message) {
         super(channel, message);

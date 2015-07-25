@@ -33,8 +33,11 @@ import ircu.navjotpanesar.com.ircu.adapters.DividerItemDecoration;
 import ircu.navjotpanesar.com.ircu.callbacks.OnDialogSuccessListener;
 import ircu.navjotpanesar.com.ircu.contentproviders.ChannelsContentProvider;
 import ircu.navjotpanesar.com.ircu.database.ChannelsTable;
+import ircu.navjotpanesar.com.ircu.database.ServerCache;
 import ircu.navjotpanesar.com.ircu.pircbot.ChannelItem;
+import ircu.navjotpanesar.com.ircu.pircbot.Server;
 import ircu.navjotpanesar.com.ircu.utils.IdenticonFactory;
+import ircu.navjotpanesar.com.ircu.utils.SharedPrefs;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +52,8 @@ public class ChannelListFragment extends Fragment {
     private OnChannelSwitchListener mListener;
     private RecyclerView channelRecyclerView;
     private ChannelListAdapter channelListAdapter;
+    private ImageView imageView;
+    private TextView usernameView;
 
     public static ChannelListFragment newInstance() {
         ChannelListFragment fragment = new ChannelListFragment();
@@ -83,13 +88,11 @@ public class ChannelListFragment extends Fragment {
         });
 
 
-        ImageView imageView = (ImageView) rootView.findViewById(R.id.navigation_header_imageview);
-        TextView usernameView = (TextView) rootView.findViewById(R.id.navigation_header_username);
+        imageView = (ImageView) rootView.findViewById(R.id.navigation_header_imageview);
+        usernameView = (TextView) rootView.findViewById(R.id.navigation_header_username);
 
-        String username = "Testerino2311";
-        IdenticonFactory identiconFactory = new IdenticonFactory(getActivity(), 70, 70);
-        usernameView.setText(username);
-        imageView.setImageBitmap(identiconFactory.getBitmap(username));
+        String username = SharedPrefs.getDefaultUsername(getActivity());
+        setUserHeader(username);
 
         return rootView;
     }
@@ -123,8 +126,18 @@ public class ChannelListFragment extends Fragment {
         @Override
         public void channelSwitch(ChannelItem channel) {
             mListener.channelSwitch(channel);
+
+            String serverName = channel.getServer();
+            Server server = ServerCache.getServer(serverName, getActivity());
+            setUserHeader(server.getUsername());
         }
     };
+
+    private void setUserHeader(String username){
+        IdenticonFactory identiconFactory = new IdenticonFactory(getActivity(), 70, 70);
+        usernameView.setText(username);
+        imageView.setImageBitmap(identiconFactory.getBitmap(username));
+    }
 
     //call when user adds new channel
     private void saveNewChannel(String channel, String server){

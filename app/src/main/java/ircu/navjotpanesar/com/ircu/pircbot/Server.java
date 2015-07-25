@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 import ircu.navjotpanesar.com.ircu.callbacks.ChatServiceCallback;
 import ircu.navjotpanesar.com.ircu.models.ChatMessage;
+import ircu.navjotpanesar.com.ircu.models.JoinMessage;
+import ircu.navjotpanesar.com.ircu.models.LeaveMessage;
 import ircu.navjotpanesar.com.ircu.models.SystemMessage;
 import ircu.navjotpanesar.com.ircu.utils.ChatLogger;
 
@@ -108,8 +110,10 @@ public class Server extends PircBot {
     }
 
     @Override
-    protected void onPart(String channel, String sender, String login, String hostname) {
-        //ircCallback.messageCallback("SYSTEM", sender + " just left", channel, this.getAddress(), ChatItem.PERMISSION_SYSTEM);
+    protected void onPart(String channelName, String sender, String login, String hostname) {
+        ChannelItem channel = channelMap.get(channelName);
+        LeaveMessage newLeaveMessage = new LeaveMessage(channel, sender);
+        chatServiceCallback.onSystemMessage(newLeaveMessage);
     }
 
     /*
@@ -128,9 +132,10 @@ public class Server extends PircBot {
     }*/
 
     @Override
-    protected void onJoin(String channel, String sender, String login, String hostname) {
-        //ircCallback.messageCallback("SYSTEM", sender + " has joined", channel, this.getAddress(), ChatItem.PERMISSION_SYSTEM);
-
+    protected void onJoin(String channelName, String sender, String login, String hostname) {
+        ChannelItem channel = channelMap.get(channelName);
+        JoinMessage newJoinMessage = new JoinMessage(channel, sender);
+        chatServiceCallback.onSystemMessage(newJoinMessage);
     }
 
     @Override
