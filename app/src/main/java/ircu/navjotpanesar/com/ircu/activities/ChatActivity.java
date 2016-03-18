@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import ircu.navjotpanesar.com.ircu.fragments.ChannelListFragment;
 import ircu.navjotpanesar.com.ircu.fragments.ChatListFragment;
 import ircu.navjotpanesar.com.ircu.R;
@@ -31,6 +33,7 @@ public class ChatActivity extends BaseActionBarActivity implements ChannelListFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         if (savedInstanceState == null) {
             chatListFragment = ChatListFragment.newInstance() ;
             getFragmentManager().beginTransaction()

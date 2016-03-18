@@ -32,6 +32,9 @@
         <service
             android:name=".services.ChatService"
             android:exported="false"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="e7166cd45916b3cc8b9d2646551e8a5d5b64fa17" />
     </application>
 
 </manifest>
